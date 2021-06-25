@@ -10,11 +10,11 @@ import (
 )
 
 // Vamos a hacer una lista.
-	// Ahora el modelo:
+// Ahora el modelo:
 
 type model struct {
-	choices []string 		  // items de la lista
-	cursor int				  // para moverse entre los items
+	choices  []string         // items de la lista
+	cursor   int              // para moverse entre los items
 	selected map[int]struct{} // cuales items estan seleccionados
 }
 
@@ -22,53 +22,53 @@ type model struct {
 
 var initialModel = model{
 	// La lista es una lista de productos:
-	choices: []string{"yerbini suave","birritas frias","pizzitas melas","programar TUIs"},
+	choices: []string{"yerbini suave", "birritas frias", "pizzitas melas", "programar TUIs"},
 
 	// Un mapa indica bien cuales estan seleccionadas.
 	selected: make(map[int]struct{}),
 }
 
-func (m model) Init() tea.Cmd{
+func (m model) Init() tea.Cmd {
 	// return `nil` -> no + I/O
-	return nil 
+	return nil
 }
 
 // Update (tea.KeyMsg)
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
-	switch msg := msg.(type){
-		// Hay una tecla presionada:
-		case tea.KeyMsg:
+	switch msg := msg.(type) {
+	// Hay una tecla presionada:
+	case tea.KeyMsg:
 
-			// Cual?
-			switch msg.String() {
+		// Cual?
+		switch msg.String() {
 
-				//Salir del programa
-			case "ctrl+c", "q":
-				return m, tea.Quit
+		//Salir del programa
+		case "ctrl+c", "q":
+			return m, tea.Quit
 
-			case "up", "k":
-				if m.cursor > 0 {
-					m.cursor--
-				}
-
-			case "down","j":
-				if m.cursor < len(m.choices)-1 {
-					m.cursor++
-				}
-			
-			// enter, spacebar: select item
-			case "enter", " ":
-				_, ok := m.selected[m.cursor]
-				if ok {
-					delete(m.selected,m.cursor)
-				} else{
-					m.selected[m.cursor] = struct{}{}
-				}
+		case "up", "k":
+			if m.cursor > 0 {
+				m.cursor--
 			}
+
+		case "down", "j":
+			if m.cursor < len(m.choices)-1 {
+				m.cursor++
+			}
+
+		// enter, spacebar: select item
+		case "enter", " ":
+			_, ok := m.selected[m.cursor]
+			if ok {
+				delete(m.selected, m.cursor)
+			} else {
+				m.selected[m.cursor] = struct{}{}
+			}
+		}
 	}
 
 	// return updated model, no command
-	return m,nil
+	return m, nil
 }
 
 // View
@@ -78,7 +78,7 @@ func (m model) View() string {
 	s := "Melo pa una fiestica, tener:\n\n"
 
 	//iterar sobre choices
-	for i,choice := range m.choices {
+	for i, choice := range m.choices {
 		// cursor en lugar i
 		cursor := " " // no
 		if m.cursor == i {
@@ -92,17 +92,15 @@ func (m model) View() string {
 		}
 
 		// Renderizar fila:
-		s += fmt.Sprintf("%s [%s] %s\n",cursor, checked, choice)
-		
+		s += fmt.Sprintf("%s [%s] %s\n", cursor, checked, choice)
+
 	}
-	
+
 	// footer:
 	s += "\n Presionar q para salir.\n"
 
 	return s
 }
-
-
 
 func main() {
 	//fmt.Println("Hello,World!")
@@ -113,7 +111,3 @@ func main() {
 		os.Exit(1)
 	}
 }
-
-
-
-
