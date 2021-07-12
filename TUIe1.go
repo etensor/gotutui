@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	//"os"
+
 	"github.com/charmbracelet/lipgloss"
+	"github.com/etensor/gotutui/countdown"
 )
 
 var style = lipgloss.NewStyle().
@@ -17,4 +18,5 @@ var style = lipgloss.NewStyle().
 func main() {
 	fmt.Println(style.Render("Hello there."))
 	mainss()
+	countdown.Countdown()
 }

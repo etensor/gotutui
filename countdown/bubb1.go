@@ -61,7 +61,7 @@ func tick() tea.Cmd {
 	})
 }
 
-func countdown() {
+func Countdown() {
 	m := model{
 		timeout: time.Now().Add(duration),
 	}

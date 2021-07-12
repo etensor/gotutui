@@ -8,3 +8,4 @@ require (
 )
 
 // replace github.com/charmbracelet/lipgloss => ../../Documentos/BubbleTUIgo/lipgloss
+replace github.com/etensor/gotutui => ./countdown

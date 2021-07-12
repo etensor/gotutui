@@ -22,7 +22,7 @@ type model struct {
 
 var initialModel = model{
 	// La lista es una lista de productos:
-	choices: []string{"yerbini suave", "birritas frias", "pizzitas melas", "programar TUIs"},
+	choices: []string{"erbin suav", "birritas frias", "pizzitas melas", "programar TUIs"},
 
 	// Un mapa indica bien cuales estan seleccionadas.
 	selected: make(map[int]struct{}),
@@ -102,7 +102,7 @@ func (m model) View() string {
 	return s
 }
 
-func main() {
+func mainss() {
 	//fmt.Println("Hello,World!")
 
 	p := tea.NewProgram(initialModel)
