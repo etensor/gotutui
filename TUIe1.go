@@ -19,4 +19,5 @@ func main() {
 	fmt.Println(style.Render("Hello there."))
 	mainss()
 	countdown.Countdown()
+	countdown.Alive()
 }
