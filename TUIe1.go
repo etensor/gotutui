@@ -42,6 +42,7 @@ func main() {
 	fmt.Print(out + "\n\n")
 	//fmt.Println(stilacho.Render("Cuenti"))
 	fmt.Println(style.Render("Hello there."))
+	countdown.Main_TUI()
 	countdown.Alive()
 	mainss()
 	countdown.Countdown()
