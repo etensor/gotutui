@@ -32,14 +32,14 @@ func main() {
 				{
 					Width: 50,
 					Cells: []Cell{
-						{Width: 10, Text: stilacho.Render("Cuenti"), Overflow: WrapWord},
-						{Width: 20, Text: style.Render("Chimba")},
+						{Width: 20, Text: stilacho.Render("Cuenti"), Overflow: WrapWord, Align: Right},
+						{Width: 20, Text: style.Render("Chimba"), Overflow: WrapWord},
 					},
 				},
 			},
 		})
 
-	fmt.Print(out)
+	fmt.Print(out + "\n\n")
 	//fmt.Println(stilacho.Render("Cuenti"))
 	fmt.Println(style.Render("Hello there."))
 	countdown.Alive()
