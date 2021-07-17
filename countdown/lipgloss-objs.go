@@ -222,7 +222,7 @@ func create_tabs() {
 		fmt.Scan(&name)
 		tabs = append(tabs, name)
 	}
-	fmt.Print("\n")
+	fmt.Print("\n\n")
 	var row = lipgloss.JoinHorizontal(lipgloss.Top, activeTab.Render(tabs[0]))
 
 	for i, v := range tabs {
