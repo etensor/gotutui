@@ -6,11 +6,12 @@ import (
 	"github.com/marcusolsson/tui-go"
 )
 
-var logo = `     _____ __ ____  ___   ______________  
-    / ___// //_/\ \/ / | / / ____/_  __/  
-    \__ \/ ,<    \  /  |/ / __/   / /     
-   ___/ / /| |   / / /|  / /___  / /      
-  /____/_/ |_|  /_/_/ |_/_____/ /_/     `
+var logo = `
+	  	______ _____ _____  _   __  ______   ___     _______
+     / ____/_  __/ ____/ / | / / /  ___/ /    \   /  _   \
+    / __/   / / / __/   /  |/ /  \__ \  /  /\  ) /  -- __/
+   / /___  / / / /___  / /|  /  ___/ / (  \/  / /  /\  \
+  /_____/ /_/ /_____/ /_/ |_/  /____/   \____/ /__/  \__\ `
 
 func Login() {
 	user := tui.NewEntry()
@@ -39,7 +40,7 @@ func Login() {
 	)
 
 	window := tui.NewVBox(
-		tui.NewPadder(10, 1, tui.NewLabel(logo)),
+		tui.NewPadder(3, 1, tui.NewLabel(logo)),
 		tui.NewPadder(12, 0, tui.NewLabel("Welcome to Skynet! Login or register.")),
 		tui.NewPadder(1, 1, form),
 		buttons,
