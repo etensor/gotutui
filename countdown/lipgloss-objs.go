@@ -213,13 +213,21 @@ func create_tabs() {
 	var n_tabs int
 	fmt.Scan(&n_tabs)
 
+	if n_tabs <= 0 {
+		n_tabs = 1
+	}
+
 	fmt.Print(" name your tabs: (\" \") separated)")
 	var tabs []string
 
 	for i := 0; i < n_tabs; i++ {
 		var name string
 		fmt.Print(" [", i, "] : ")
-		fmt.Scan(&name)
+		if n_tabs == 1 {
+			name = "[(o~O)]"
+		} else {
+			fmt.Scan(&name)
+		}
 		tabs = append(tabs, name)
 	}
 	fmt.Print("\n\n")
