@@ -67,6 +67,7 @@ func Login() {
 	}
 
 	ui.SetKeybinding("Esc", func() { ui.Quit() })
+	ui.SetKeybinding("ctrl+c", func() { ui.Quit() })
 
 	if err := ui.Run(); err != nil {
 		log.Fatal(err)
