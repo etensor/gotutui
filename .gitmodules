@@ -1,0 +1,3 @@
+[submodule "seqpi"]
+	path = seqpi
+	url = git@github.com:etensor/seqpi.git
