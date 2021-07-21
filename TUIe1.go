@@ -6,6 +6,8 @@ import (
 	. "github.com/achannarasappa/term-grid"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/etensor/gotutui/countdown"
+	"github.com/etensor/gotutui/paginator"
+	"github.com/etensor/gotutui/selectors"
 )
 
 var style = lipgloss.NewStyle().
@@ -40,10 +42,11 @@ func main() {
 		})
 
 	fmt.Print(out + "\n\n")
+	paginator.Pager()
 	//fmt.Println(stilacho.Render("Cuenti"))
 	fmt.Println(style.Render("Hello there."))
 	countdown.Main_TUI()
 	countdown.Alive()
-	mainss()
+	selectors.Select_items()
 	countdown.Countdown()
 }

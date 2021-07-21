@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/achannarasappa/term-grid v0.2.4
+	github.com/charmbracelet/bubbles v0.8.0
 	github.com/charmbracelet/bubbletea v0.14.1
 	github.com/charmbracelet/lipgloss v0.3.0
 	github.com/lucasb-eyer/go-colorful v1.2.0
