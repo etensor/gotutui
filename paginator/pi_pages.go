@@ -8,6 +8,7 @@ import (
 	"log"
 	"os/exec"
 	"strings"
+
 	//"regexp"
 
 	"github.com/charmbracelet/bubbles/paginator"
@@ -58,32 +59,34 @@ func newModel() model {
 					}
 				}
 			*/
+
 			//exp := fmt.Sprintf("%d(?=\\033[0;31m)",i) 				/// go regexp doesnt support lookarounds, perl syntax
 			//exp := fmt.Sprintf(`\033[01;31m`+"%d"+`\033[0m`,i) 						//	///	/	/	 after i, back to normal.
 			//r := regexp.MustCompile(exp)										//// problem was solved, but it was 01;31, not 0;31 tone
 			//str := string(out)
-			//exp := fmt.Sprintf(`\033[01;31m`+"%d",i) 																
+			//exp := fmt.Sprintf(`\033[01;31m`+"%d",i)
 			//triangle_items := strings.SplitAfter(string(out),fmt.Sprint(i))
-			fmt.Printf("%+q",string(out))										/// This prints everything raw, see final char, split later.
-			triangle_items := strings.SplitAfter(string(out),"01;31m")						 /// it was way more easy...
+			//fmt.Printf("%+q", string(out)+"\n")                              /// This prints everything raw, see final char, split later.
+			// #9 : \x1b[01;31m\x1b[K9\x1b[m\x1b[K75665\x1b[01;31m\x1b[K9
+			triangle_items := strings.SplitAfter(string(out), fmt.Sprintf("K%d", i)) /// it was way more easy...
 			// this causes \n before cypher $i
 			// for after: 														/// if it fails, check fmt.Printf("%+q",string(out)) result and fix.
-			
-			/// fmt.Printf("%+q",string(out)) solved symbols used to colour findings 
 
-			//triangle_items := r.Split(str,-1)									
+			/// fmt.Printf("%+q",string(out)) solved symbols used to colour findings
+
+			//triangle_items := r.Split(str,-1)
 			//triangle_items := strings.SplitAfter(str, exp)
-			
+
 			var b strings.Builder
 
-			for j:=0;j<len(triangle_items);j++ {
-				b.WriteString(triangle_items[j]+"\n   ")
+			for j := 0; j < len(triangle_items); j++ {
+				b.WriteString(triangle_items[j] + "\n   ")
 			}
 
 			/// Works but as grep colors cyphers red, 0;31m is added each time, then is found and split,
 			/// breaking the string.
-				// ` ` between regexp.MustCompile, exclude 0;31m // \033[0;31m  			<- valid for echo. not only available
-				// line 62
+			// ` ` between regexp.MustCompile, exclude 0;31m // \033[0;31m  			<- valid for echo. not only available
+			// line 62
 
 			items[i] = b.String()
 		}
@@ -130,9 +133,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	m.paginator, cmd = m.paginator.Update(msg)
 	return m, cmd
 }
+
 /// Problem: item is just a string. split is not symmetrical.
-	// if split after %d,i, ++"\n"
-	// if split after %d, any after N numbers are printed. -> sym to width. 
+// if split after %d,i, ++"\n"
+// if split after %d, any after N numbers are printed. -> sym to width.
 
 func (m model) View() string {
 	var b strings.Builder
@@ -141,7 +145,6 @@ func (m model) View() string {
 	for _, item := range m.items[start:end] {
 		b.WriteString("   ")
 		b.WriteString(item)
-		b.WriteString("\n\n")
 	}
 	b.WriteString("  " + m.paginator.View())
 	b.WriteString("\n\n  h/l ←/→ page • q: quit\n")
