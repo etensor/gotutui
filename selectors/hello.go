@@ -62,7 +62,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if ok {
 				delete(m.selected, m.cursor)
 			} else {
-				m.selected[m.cursor] = struct{}{}
+				m.selected[m.cursor] = struct{}{}				
 			}
 		}
 	}
@@ -89,6 +89,8 @@ func (m model) View() string {
 		checked := " " // no act
 		if _, ok := m.selected[i]; ok {
 			checked = "x" // act, seleccionado
+			// now use this to execute programs, different pages. But this would be for multi element selection...
+
 		}
 
 		// Renderizar fila:

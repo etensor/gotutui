@@ -18,16 +18,28 @@ import (
 )
 
 // pwd of pi_viz is not paginator, but root.
+type model struct {
+	items     [10]string
+	paginator paginator.Model
+	mode      string
+}
 
-func newModel() model {
+func newModel(pimode string) model {
 	//physicalWidth, _, _ := term.GetSize(int(os.Stdout.Fd()))
+
+	// f := func(c rune) bool {
+	// 	return unicode.IsSpace(c) || c == '.'
+	// }
+
+	// s := "We. are.. them. 314152718"
+	// fmt.Printf("Fields are: %q\n", strings.FieldsFunc(s, f))		//// erases . and splits by " "
 
 	var items [10]string
 	for i := 0; i < 10; i++ {
 		//text := fmt.Sprintf("Item %d", i)
 		//command := fmt.Sprintf("zsh ../seqpi/pi_viz.sh 100 %d", i)
 		//out, err := exec.Command("echo", "hello world").Output()
-		cmd := exec.Command("zsh", "./paginator/pi_viz.sh", "300", fmt.Sprintf("%d", i)) // finally.
+		cmd := exec.Command("zsh", "./paginator/pi_viz.sh", "400", fmt.Sprintf("%d", i)) // finally.
 		//cmd := exec.Command("pwd") //"\"$pwd\"")
 
 		/// Does not execute command. but defines it.
@@ -44,21 +56,6 @@ func newModel() model {
 		out, err := cmd.CombinedOutput()
 		//cmd.Wait()
 		if err == nil {
-			//items[i] = string(out) /// string doesn't get fit to screen.
-			//fmt.Printf("\t,, %d \n", strings.Count(string(out),""))
-			//fmt.Printf("\n now wtf: \v %s", out)
-
-			/*
-				if physicalWidth < len(string(out)) {
-					j := 1
-					k := len(string(out))/physicalWidth
-
-					for j <= k {
-							//items[i] += string(out)[((j-1)*physicalWidth):(j*physicalWidth)] + "\n    "
-						j++
-					}
-				}
-			*/
 
 			//exp := fmt.Sprintf("%d(?=\\033[0;31m)",i) 				/// go regexp doesnt support lookarounds, perl syntax
 			//exp := fmt.Sprintf(`\033[01;31m`+"%d"+`\033[0m`,i) 						//	///	/	/	 after i, back to normal.
@@ -68,34 +65,24 @@ func newModel() model {
 			//triangle_items := strings.SplitAfter(string(out),fmt.Sprint(i))
 			//fmt.Printf("%+q", string(out)+"\n")                              /// This prints everything raw, see final char, split later.
 			// #9 : \x1b[01;31m\x1b[K9\x1b[m\x1b[K75665\x1b[01;31m\x1b[K9
-			triangle_items := strings.SplitAfter(string(out), fmt.Sprintf("K%d", i)) /// it was way more easy...
-			// this causes \n before cypher $i
-			// for after: 														/// if it fails, check fmt.Printf("%+q",string(out)) result and fix.
 
-			/// fmt.Printf("%+q",string(out)) solved symbols used to colour findings
+			var triangle_items []string
+			if pimode == "distances" || pimode == "" {
+				triangle_items = strings.SplitAfter(string(out), fmt.Sprintf("K%d", i)) /// it was way more easy...
 
-			//triangle_items := r.Split(str,-1)
-			//triangle_items := strings.SplitAfter(str, exp)
+				var b strings.Builder
+				for j := 0; j < len(triangle_items); j++ {
+					b.WriteString(triangle_items[j] + "\n   ")
+				}
+				items[i] = b.String()
 
-			var b strings.Builder
-
-			for j := 0; j < len(triangle_items); j++ {
-				b.WriteString(triangle_items[j] + "\n   ")
+			} else if pimode == "blocks" { /// maybe there is a workaround....
+				/// maybe running the command when its called to page, it can be slow, is seems the only way.
+				/// changing the order of printing did it... no need to rerun  
+				items[i] = string(out)
 			}
-
-			/// Works but as grep colors cyphers red, 0;31m is added each time, then is found and split,
-			/// breaking the string.
-			// ` ` between regexp.MustCompile, exclude 0;31m // \033[0;31m  			<- valid for echo. not only available
-			// line 62
-
-			items[i] = b.String()
 		}
-		/*
-			if output, err := cmd.Output(); err != nil {
-				items[i] = string(output)
-			} else {
-				fmt.Print("\t\v error: ", err)
-			}*/
+		// if it fails, check fmt.Printf("%+q",string(out)) result and fix.
 
 	}
 
@@ -109,12 +96,8 @@ func newModel() model {
 	return model{
 		paginator: p,
 		items:     items,
+		mode:      pimode,
 	}
-}
-
-type model struct {
-	items     [10]string
-	paginator paginator.Model
 }
 
 func (m model) Init() tea.Cmd {
@@ -139,21 +122,31 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 // if split after %d, any after N numbers are printed. -> sym to width.
 
 func (m model) View() string {
-	var b strings.Builder
-	b.WriteString("\n  Paginator Example\n\n")
+	var b, a strings.Builder
+	a.WriteString("\n  Pi Digits Distribution\n\n")
 	start, end := m.paginator.GetSliceBounds(len(m.items))
-	for _, item := range m.items[start:end] {
-		b.WriteString("   ")
-		b.WriteString(item)
+
+	switch m.mode{
+		case "distances":{
+			for _, item := range m.items[start:end] {
+				a.WriteString("   " + item)	
+			}
+			b.WriteString("  " + m.paginator.View() + "\n\n  h/l ←/→ page • q: quit\n")
+		}
+		case "blocks":{
+			b.Reset()
+			for _, item := range m.items[start:end] {
+				defer fmt.Printf("\033c\n  Pi Digits Distribution\n\n%s\n\t\t\t  %s\n\t\t    h/l ←/→ page • q: quit\n",item,m.paginator.View())
+			}
+		}
 	}
-	b.WriteString("  " + m.paginator.View())
-	b.WriteString("\n\n  h/l ←/→ page • q: quit\n")
-	return b.String()
+	
+	return a.String() + b.String()
 }
 
-func Pager() {
+func Pager(mode string) {
 
-	p := tea.NewProgram(newModel())
+	p := tea.NewProgram(newModel(mode))
 	if err := p.Start(); err != nil {
 		log.Fatal(err)
 	}
