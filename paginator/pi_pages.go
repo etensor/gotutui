@@ -145,7 +145,9 @@ func (m model) View() string {
 }
 
 func Pager(mode string) {
-
+	if mode == "sequentially"{
+		return;
+	}
 	p := tea.NewProgram(newModel(mode))
 	if err := p.Start(); err != nil {
 		log.Fatal(err)

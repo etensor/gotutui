@@ -13,7 +13,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 )
 
-var choices = []string{"distances", "blocks"}
+var choices = []string{"distances", "blocks","sequentially"}
 
 type model struct {
 	cursor int
@@ -68,7 +68,7 @@ func (m model) View() string {
 		s.WriteString(choices[i])
 		s.WriteString("\n")
 	}
-	s.WriteString("\n(press q to quit)\n")
+	s.WriteString("\n(press q to quit, enter to confirm)\n")
 
 	return s.String()
 }
