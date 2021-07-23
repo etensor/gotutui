@@ -259,7 +259,6 @@ func create_tabs() {
 func Main_TUI() {
 
 	create_tabs()
-	Login()
 
 	physicalWidth, _, _ := term.GetSize(int(os.Stdout.Fd()))
 	doc := strings.Builder{}
