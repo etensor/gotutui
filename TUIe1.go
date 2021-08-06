@@ -30,7 +30,6 @@ var stilacho = lipgloss.NewStyle().
 
   
     
-
 func main() {
 
 	out := Render(
@@ -50,6 +49,7 @@ func main() {
 
 	fmt.Print(out + "\n\n")
 	pi_mode := selector.Select_pi_mode()
+
 	paginator.Pager(pi_mode)
 	//fmt.Println(stilacho.Render("Cuenti"))
 	fmt.Println(style.Render("Hello there."))
