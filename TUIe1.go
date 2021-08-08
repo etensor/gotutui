@@ -7,9 +7,8 @@ import (
 	"github.com/charmbracelet/lipgloss"
 	"github.com/etensor/gotutui/countdown"
 	"github.com/etensor/gotutui/paginator"
-	"github.com/etensor/gotutui/selectors"
 	"github.com/etensor/gotutui/selector"
-
+	"github.com/etensor/gotutui/selectors"
 )
 
 var style = lipgloss.NewStyle().
@@ -26,10 +25,6 @@ var stilacho = lipgloss.NewStyle().
 	PaddingTop(2).
 	PaddingLeft(4)
 
-
-
-  
-    
 func main() {
 
 	out := Render(
@@ -48,9 +43,10 @@ func main() {
 		})
 
 	fmt.Print(out + "\n\n")
-	pi_mode := selector.Select_pi_mode()
+	number_chosen := selector.Select_number()
+	viz_mode := selector.Select_cmode()
 
-	paginator.Pager(pi_mode)
+	paginator.Pager(viz_mode, number_chosen)
 	//fmt.Println(stilacho.Render("Cuenti"))
 	fmt.Println(style.Render("Hello there."))
 	countdown.Main_TUI()

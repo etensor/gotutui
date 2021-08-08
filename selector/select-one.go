@@ -13,7 +13,9 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 )
 
-var choices = []string{"distances", "blocks","sequentially"}
+var choices = []string{"e","pi","phi"}
+var message = " e π φ digit visualization:\n\t select number:\n"
+
 
 type model struct {
 	cursor int
@@ -57,7 +59,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m model) View() string {
 	s := strings.Builder{}
-	s.WriteString(" Acceder a cifras-pi de que forma?\n\n")
+	s.WriteString(message)
 
 	for i := 0; i < len(choices); i++ {
 		if m.cursor == i {
@@ -73,10 +75,15 @@ func (m model) View() string {
 	return s.String()
 }
 
-func Select_pi_mode() string {
+func Select_cmode() string {
 	// This is where we'll listen for the choice the user makes in the Bubble
 	// Tea program.
 	result := make(chan string, 1)
+
+	choices[0] = "distances"
+	choices[1] = "blocks"
+	choices[2] = "sequentially"
+	message    = " Acceder a cifras de que forma?\n\n"
 
 	// Pass the channel to the initialize function so our Bubble Tea program
 	// can send the final choice along when the time comes.
@@ -93,3 +100,24 @@ func Select_pi_mode() string {
 	}
 	return ""
 }
+
+func Select_number() string {
+	result := make(chan string, 1)
+
+	p:= tea.NewProgram(model{cursor : 0, choice: result})
+	if err := p.Start(); err != nil {
+		fmt.Println("Error! : ",err)
+	}
+
+	if r := <- result; r != ""{
+		fmt.Printf("\v  %s will be analyzed.", r)
+		return r
+	}
+	return ""
+
+
+
+}
+
+
+
