@@ -1,14 +1,27 @@
 # Gotutui
-## TUI Elements combined
+## TUI Elements
 
-The order of execution is not yet well defined. I have been playing with the library charmbracelet/bubbletea+lipgloss.
+Built with charmbracelet/lipgloss,bubbles.
 
-> To run it make sure to have go installed, is really easy to do if you haven't done it already.
+Usando los widgets que tiene para presentar un programa más interactivo por la terminal.
 
-### Usage:
+La carpeta seqpi contiene programas de c++ que hice para representar la secuencia de números de la cifra trascendental pi. 
+Ahora tiene color, y para escoger ver $e \or \pi \or \phi$
 
-```zsh
+Tienes que tener go instalado, si tu cpu no es amd64 entonces con g++ compila *dcypher_nums.cpp*, este programa es llamado desde go y espera que se llame epiphi.
+
+#### if arch != amd64 and execs -> 1:
+> compilar en /seqpi/:
+```bash
+    g++ dcypher_nums.cpp -o epiphi
+```
+Hay un script en zsh que no se si falle, entonces arreglar el principio del archivo .sh con bash o sh...
+ #!/usr/bin/zsh  $ \; \rightarrow \;$ #!/usr/bin/bash
+
+Ese programa tambien representa las cifras usando **grep**, pero no las cuenta, solo las separa de acuerdo al modo escogido. 
+
+### Uso:
+
+```bash
     go run TUIe1.go
-    # Then get inmersed in such magic. xd
-
 ```
