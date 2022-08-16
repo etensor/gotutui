@@ -19,7 +19,7 @@ var message = " e π φ digit visualization:\n\t select number:\n"
 
 type model struct {
 	cursor int
-	choice chan string // channel listening until closed or sended
+	choice chan string // channel listening until closed or sent
 }
 
 func (m model) Init() tea.Cmd {
